@@ -1,3 +1,6 @@
+This is a fork of https://github.com/ftwkoopmans/msdap/ with the purpose of running MS-DAP in a particular nextflow pipeline, for all other purposes, please refer to the original git repo.
+
+
 
 <!-- README.md is generated from README.Rmd using devtools::build_readme() -->
 <!-- ![MS-DAP logo](doc/logo/msdap_logo_small.png)  -->
