@@ -247,7 +247,6 @@ plot_volcano = function(stats_de, log2foldchange_threshold = NA, qvalue_threshol
     dsp_plot_name <- paste('plot_volcano', stats_de$contrast, algo_name, sep = '_')
     dsp_plot_ly <- ggplotly(p)
     dsp_plot_json <- plotly_json(dsp_plot_ly)
-    htmlwidgets::saveWidget(dsp_plot_ly, paste(dsp_plot_name, ".html", sep = ''))
     write(dsp_plot_json, paste(dsp_plot_name, '.json', sep = ''))
     # export done
     if(any(tib_facets$flag_plot_label)) {
