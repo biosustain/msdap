@@ -243,12 +243,6 @@ plot_volcano = function(stats_de, log2foldchange_threshold = NA, qvalue_threshol
             legend.position = "bottom",
             legend.title = element_blank(),
             legend.text = element_text(size=8))
-    # export ggplot before adding labels
-    dsp_plot_name <- paste('plot_volcano', stats_de$contrast, algo_name, sep = '_')
-    dsp_plot_ly <- ggplotly(p)
-    dsp_plot_json <- plotly_json(dsp_plot_ly)
-    write(dsp_plot_json, paste(dsp_plot_name, '.json', sep = ''))
-    # export done
     if(any(tib_facets$flag_plot_label)) {
       if(label_avoid_overlap) {
         p = p + ggrepel::geom_text_repel(data = tib_facets %>% filter(flag_plot_label == TRUE), alpha=1, # vjust = 0.6,

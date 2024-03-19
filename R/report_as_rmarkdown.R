@@ -17,6 +17,12 @@
 #' @importFrom stringr str_wrap
 #' @importFrom devtools session_info
 #' @export
+#' 
+
+
+library(plotly) 
+library(listviewer) 
+
 generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rollup_algorithm = "maxlfq", pca_sample_labels = "auto", var_explained_sample_metadata = NULL) {
 
   start_time = Sys.time()
@@ -123,7 +129,19 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
     dd_plots = plot_differential_detect(dataset)
   }
 
+  #### export plots ####
+  for (x in l_contrast) {
+    class(x)
+      y <- ggplotly(get(x))     
+      z <- plotly_json(y)   
+  }
 
+  #  dsp_plot_name <- paste('plot_volcano', stats_de$contrast, algo_name, sep = '_')
+  #  dsp_plot_ly <- ggplotly(p)
+  #  dsp_plot_json <- plotly_json(dsp_plot_ly)
+  #  htmlwidgets::saveWidget(dsp_plot_ly, paste(dsp_plot_name, ".html", sep = ''))
+  #  write(dsp_plot_json, paste(dsp_plot_name, '.json', sep = ''))
+  #### export done ####
 
   ################ history ################
   history_as_string = ""
