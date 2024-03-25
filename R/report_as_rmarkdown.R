@@ -17,6 +17,23 @@
 #' @importFrom stringr str_wrap
 #' @importFrom devtools session_info
 #' @export
+
+# Define plotly function
+library(plotly)
+library(listviewer)
+plotdir <- paste0(output_dir, "/plots")
+dir.create(plotdir)
+# convert_to_plotly <- function(plot) { 
+#   for (p in plot) {
+#     if (isa(x, c("gg","ggplot"))){
+#       plotly_p <- ggplotly(p)
+#     }
+#   }
+#   return(plotly_p)
+# }
+
+
+
 generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rollup_algorithm = "maxlfq", pca_sample_labels = "auto", var_explained_sample_metadata = NULL) {
 
   start_time = Sys.time()
@@ -124,6 +141,34 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   }
 
 
+  ### testing plot export ###
+  # set up a functional loop and verify, then port to function to be used on all plots
+
+  ### cscore
+
+  ### variance explained
+
+  ### contrasts
+  ##### Volcano
+  # l_contrasts
+
+  for (contr in l_contrast){
+    for(exportplot in l_contrast[[contr]]){
+      dsp_plot_name = paste(contr, exportplot, sep = '')
+      if (isa(exportplot, c("gg","ggplot"))){
+        dsp_plotly <- ggplotly(exportplot)
+        dsp_json <- plotly_json(dsp_plotly)
+        htmlwidgets::saveWidget(dsp_plotly, paste(plotdir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
+        write(dsp_json, paste(plotdir, '/', dsp_plot_name, '.json', sep = ''))
+      }
+    }
+  }
+  ##### 
+
+
+
+
+  ### plot test done ###
 
   ################ history ################
   history_as_string = ""
