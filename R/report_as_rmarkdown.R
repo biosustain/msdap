@@ -145,21 +145,32 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # set up a functional loop and verify, then port to function to be used on all plots
 
   ### cscore
-
+for (exportplot in ggplot_cscore_histograms){
+  class(exportplot)
+  dsp_plot_name = paste(contr, exportplot, sep = '')
+      if (isa(exportplot, c("gg","ggplot"))){
+        dsp_plotly <- ggplotly(exportplot)
+        dsp_json <- plotly_json(dsp_plotly)
+        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
+        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
+}
   ### variance explained
 
   ### contrasts
   ##### Volcano
   # l_contrasts
 
+class(l_contrast)
   for (contr in l_contrast){
+    class(contr)
     for(exportplot in l_contrast[[contr]]){
+      class(exportplot)
       dsp_plot_name = paste(contr, exportplot, sep = '')
       if (isa(exportplot, c("gg","ggplot"))){
         dsp_plotly <- ggplotly(exportplot)
         dsp_json <- plotly_json(dsp_plotly)
-        htmlwidgets::saveWidget(dsp_plotly, paste(plotdir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
-        write(dsp_json, paste(plotdir, '/', dsp_plot_name, '.json', sep = ''))
+        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
+        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
       }
     }
   }
