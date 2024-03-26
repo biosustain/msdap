@@ -121,6 +121,16 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
       l_contrast[[contr]] = list(p_volcano_contrast = lapply(plot_volcano(stats_de = stats_contr, log2foldchange_threshold = stats_contr$signif_threshold_log2fc[1], qvalue_threshold = stats_contr$signif_threshold_qvalue[1], mtitle = mtitle), "[[", "ggplot"),
                                  p_pvalue_hist = plot_pvalue_histogram(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr),
                                  p_foldchange_density = plot_foldchanges(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr) )
+
+      #####  DSP TEST export
+      for (exportplot in l_contrast[[contr]]){
+        dsp_plot_name = paste(contr, exportplot, sep = '_')
+        dsp_plotly <- ggplotly(exportplot)
+        dsp_json <- plotly_json(dsp_plotly)
+        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
+        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
+      }
+      ##### DSP test done
     }
 
 
