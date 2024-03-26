@@ -145,6 +145,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # set up a functional loop and verify, then port to function to be used on all plots
 
   ### cscore
+  print(output_dir)
 for (exportplot in ggplot_cscore_histograms){
   class(exportplot)
   dsp_plot_name = paste(contr, exportplot, sep = '')
