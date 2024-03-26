@@ -164,6 +164,7 @@ for (exportplot in ggplot_cscore_histograms){
         dsp_json <- plotly_json(dsp_plotly)
         htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
         write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
+      }
 }
   ### variance explained
 
