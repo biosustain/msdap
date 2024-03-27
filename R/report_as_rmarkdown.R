@@ -16,6 +16,8 @@
 #' @importFrom xtable xtable
 #' @importFrom stringr str_wrap
 #' @importFrom devtools session_info
+#' @import plotly
+#' @import listviewer
 #' @export
 generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rollup_algorithm = "maxlfq", pca_sample_labels = "auto", var_explained_sample_metadata = NULL) {
 
@@ -70,6 +72,8 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # for convenience in some plotting functions, the color-codings as a wide-format tibble
   samples_colors = samples_colors_long %>% select(sample_id, shortname, prop, clr) %>% pivot_wider(id_cols = c(sample_id, shortname), names_from=prop, values_from=clr)
 
+  # Initialize list to store plotly objects
+  plotly_objects <- list()
 
   ggplot_cscore_histograms = list()
   if(length(dataset$plots) > 0 && length(dataset$plots$ggplot_cscore_histograms) > 0) {
@@ -104,6 +108,9 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
       l_contrast[[contr]] = list(p_volcano_contrast = lapply(plot_volcano(stats_de = stats_contr, log2foldchange_threshold = stats_contr$signif_threshold_log2fc[1], qvalue_threshold = stats_contr$signif_threshold_qvalue[1], mtitle = mtitle), "[[", "ggplot"),
                                  p_pvalue_hist = plot_pvalue_histogram(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr),
                                  p_foldchange_density = plot_foldchanges(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr) )
+      for (plot in l_contrast[[contr]]){
+        plotly_objects[[contr]]$plot <- ggplotly(l_contrast[[contr]]$plot)
+      }
     }
 
 
@@ -123,7 +130,12 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
     dd_plots = plot_differential_detect(dataset)
   }
 
-
+  # Export each plotly object to Plotly JSON file
+  for (i in seq_along(plotly_objects)) {
+    json_objects <- plotly_json(plotly_objects[[i]])
+    filename <- paste0(output_dir, "/plot_", i, ".json")
+    write(json_objects, file = filename)
+  }
 
   ################ history ################
   history_as_string = ""
