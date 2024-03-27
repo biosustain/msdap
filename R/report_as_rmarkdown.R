@@ -1,4 +1,3 @@
-
 #' Create the Quality Control report
 #'
 #' Normally used as part of the analysis_quickstart() function, refer to its implementation for example code.
@@ -16,24 +15,8 @@
 #' @importFrom xtable xtable
 #' @importFrom stringr str_wrap
 #' @importFrom devtools session_info
+#' @import plotly
 #' @export
-
-# Define plotly function
-library(plotly)
-library(listviewer)
-plotdir <- paste0(output_dir, "/plots")
-dir.create(plotdir)
-# convert_to_plotly <- function(plot) { 
-#   for (p in plot) {
-#     if (isa(x, c("gg","ggplot"))){
-#       plotly_p <- ggplotly(p)
-#     }
-#   }
-#   return(plotly_p)
-# }
-
-
-
 generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rollup_algorithm = "maxlfq", pca_sample_labels = "auto", var_explained_sample_metadata = NULL) {
 
   start_time = Sys.time()
@@ -66,20 +49,6 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
     rm(dataset2)
   }
 
-
-  ## optionally, we can use alternative filter for peptides to be used in PCA
-  # either recycle user settings, or follow below filter and add fraction_detect and fraction_quant
-  # !! these columns are not used downstream @ report2.Rmd yet
-  # if(any(dataset$samples$exclude) && "intensity_all_group_withexclude" %in% colnames(dataset$peptides) && any(!is.na(dataset$peptides$intensity_all_group_withexclude))) {
-  #   # there are exclude samples, do something with this column...
-  # }
-  # # dataset = filter_peptides_by_group(dataset, colname="intensity_qc_pca_all", disregard_exclude_samples=F, nquant=3, ndetect=ifelse(isdia, 3, 1), norm_algorithm = "vwmb") # intensity_all_group_withexclude
-  # # dataset = filter_peptides_by_group(dataset, colname="intensity_qc_pca_noexclude", disregard_exclude_samples=T, nquant=3, ndetect=ifelse(isdia, 3, 1), norm_algorithm = "vwmb") # intensity_all_group
-  # dataset$peptides$intensity_qc_pca_all = dataset$peptides$intensity_all_group_withexclude
-  # dataset$peptides$intensity_qc_pca_noexclude = dataset$peptides$intensity_all_group
-
-
-
   ################ plot ################
 
   ### sample metadata, color-coding and generic ggplots
@@ -87,6 +56,8 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # for convenience in some plotting functions, the color-codings as a wide-format tibble
   samples_colors = samples_colors_long %>% select(sample_id, shortname, prop, clr) %>% pivot_wider(id_cols = c(sample_id, shortname), names_from=prop, values_from=clr)
 
+  # Initialize list to store plotly objects
+  plotly_objects <- list()
 
   ggplot_cscore_histograms = list()
   if(length(dataset$plots) > 0 && length(dataset$plots$ggplot_cscore_histograms) > 0) {
@@ -97,6 +68,9 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   p_varexplained = NULL
   if(length(var_explained_sample_metadata) > 0) {
     p_varexplained = plot_variance_explained(dataset, cols_metadata = var_explained_sample_metadata, rollup_algorithm = rollup_algorithm)
+    
+    # Convert ggplot object to plotly object
+    plotly_objects$p_varexplained <- ggplotly(p_varexplained)
   }
 
   ### contrasts
@@ -114,7 +88,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
       mtitle = contr
       if("contrast_ranvars" %in% colnames(stats_contr) && length(stats_contr$contrast_ranvars[1]) > 0 && !is.na(stats_contr$contrast_ranvars[1]) && stats_contr$contrast_ranvars[1] != "") {
-        mtitle = paste0(mtitle, "\nuser-specified random variables added to regression model: ", stats_contr$contrast_ranvars[1])
+                mtitle = paste0(mtitle, "\nuser-specified random variables added to regression model: ", stats_contr$contrast_ranvars[1])
       }
 
       # optionally, provide thresholds for foldchange and qvalue so the volcano plot draws respective lines
@@ -122,25 +96,13 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
                                  p_pvalue_hist = plot_pvalue_histogram(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr),
                                  p_foldchange_density = plot_foldchanges(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr) )
 
-      #####  DSP TEST export
-      for (exportplot in l_contrast[[contr]]){
-        dsp_plot_name = paste(contr, exportplot, sep = '_')
-        dsp_plotly <- ggplotly(exportplot)
-        dsp_json <- plotly_json(dsp_plotly)
-        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
-        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
-      }
-      ##### DSP test done
-    }
+      # Convert ggplot objects to plotly objects
+      l_contrast[[contr]]$p_volcano_contrast <- lapply(l_contrast[[contr]]$p_volcano_contrast, ggplotly)
+      l_contrast[[contr]]$p_pvalue_hist <- ggplotly(l_contrast[[contr]]$p_pvalue_hist)
+      l_contrast[[contr]]$p_foldchange_density <- ggplotly(l_contrast[[contr]]$p_foldchange_density)
 
-
-    ### summary table of all stats
-    tib_report_stats_summary = dea_summary_prettyprint(dataset, trim_contrast_names = TRUE)
-
-    ### analogous for differential detection
-    tib_report_diffdetects_summary = diffdetect_summary_prettyprint(dataset, use_quant = FALSE, trim_contrast_names = TRUE)
-    if(isdia == FALSE) {
-      tib_report_diffdetects_summary_quant = diffdetect_summary_prettyprint(dataset, use_quant = TRUE, trim_contrast_names = TRUE)
+      # Store plotly objects in the list
+      plotly_objects[[contr]] <- l_contrast[[contr]]
     }
   }
 
@@ -148,50 +110,15 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   ### differential detect
   if("dd_proteins" %in% names(dataset) && is.data.frame(dataset$dd_proteins) && nrow(dataset$dd_proteins) > 0) {
     dd_plots = plot_differential_detect(dataset)
-  }
-
-
-  ### testing plot export ###
-  # set up a functional loop and verify, then port to function to be used on all plots
-
-  ### cscore
-  print(output_dir)
-for (exportplot in ggplot_cscore_histograms){
-  class(exportplot)
-  dsp_plot_name = paste(contr, exportplot, sep = '')
-      if (isa(exportplot, c("gg","ggplot"))){
-        dsp_plotly <- ggplotly(exportplot)
-        dsp_json <- plotly_json(dsp_plotly)
-        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
-        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
-      }
-}
-  ### variance explained
-
-  ### contrasts
-  ##### Volcano
-  # l_contrasts
-
-class(l_contrast)
-  for (contr in l_contrast){
-    class(contr)
-    for(exportplot in l_contrast[[contr]]){
-      class(exportplot)
-      dsp_plot_name = paste(contr, exportplot, sep = '')
-      if (isa(exportplot, c("gg","ggplot"))){
-        dsp_plotly <- ggplotly(exportplot)
-        dsp_json <- plotly_json(dsp_plotly)
-        htmlwidgets::saveWidget(dsp_plotly, paste(output_dir, '/', dsp_plot_name, ".html", sep = '')) # nolint: line_length_linter.
-        write(dsp_json, paste(output_dir, '/', dsp_plot_name, '.json', sep = ''))
-      }
+    
+    # Convert ggplot objects to plotly objects
+    for (i in seq_along(dd_plots)) {
+      dd_plots[[i]] <- ggplotly(dd_plots[[i]])
     }
+
+    # Store plotly objects in the list
+    plotly_objects$dd_plots <- dd_plots
   }
-  ##### 
-
-
-
-
-  ### plot test done ###
 
   ################ history ################
   history_as_string = ""
@@ -211,6 +138,14 @@ class(l_contrast)
     }, silent = TRUE)
   }
 
+  ################ Export to Plotly JSON ################
+
+  # Export each plotly object to Plotly JSON file
+  for (i in seq_along(plotly_objects)) {
+    plotly_json <- plotly_json(plotly_objects[[i]])
+    filename <- paste0(output_dir, "/plot_", i, ".json")
+    write(plotly_json, file = filename)
+  }
 
   ################ render Rmarkdown ################
 
@@ -253,10 +188,3 @@ class(l_contrast)
   if(!file.exists(fpdf_finallocation)) {
     append_log(paste("failed to move the PDF report from", fpdf_templocation, "to", fpdf_finallocation), type = "error")
   }
-
-  # try to remove entire temp dir; may fail if user opened one of the files or is inside the dir in windows explorer
-  # should be safe because we use a unique name in a dir we created previously AND we checked that this is an existing path where we have write access (otherwise above code would have failed)
-  unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
-
-  append_log_timestamp("report:", start_time)
-}
