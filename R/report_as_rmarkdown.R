@@ -1,3 +1,4 @@
+
 #' Create the Quality Control report
 #'
 #' Normally used as part of the analysis_quickstart() function, refer to its implementation for example code.
