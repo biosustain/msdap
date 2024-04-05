@@ -132,12 +132,11 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
   # Export each plotly object to Plotly JSON file
   for (i in seq_along(plotly_objects)) {
-    json_objects <- plotly_json(plotly_objects[[i]])
-    filename <- paste0(output_dir, "/plot_", i, ".json")
+    for (j in seq_along(plotly_objects[i])) {
+      json_objects <- plotly_json(plotly_objects[[j]])
+      filename <- paste0(output_dir, "/plot_", i, "_", j, ".json")
     write(json_objects, file = filename)
-    # test export html widget
-    widgetname <- paste0(output_dir, "/widget_", i, ".html")
-    htmlwidgets::saveWidget(plotly_objects[[i]], widgetname)
+      }
   }
 
   ################ history ################
