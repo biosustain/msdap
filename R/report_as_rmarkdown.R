@@ -131,8 +131,8 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   }
 
   # Export each plotly object to Plotly JSON file
-  for (i in seq_along(plotly_objects)) {
-    for (j in seq_along(plotly_objects[i])) {
+  for (i in plotly_objects) {
+    for (j in plotly_objects[i]) {
       json_objects <- plotly_json(plotly_objects[[j]])
       filename <- paste0(output_dir, "/plot_", i, "_", j, ".json")
     write(json_objects, file = filename)
