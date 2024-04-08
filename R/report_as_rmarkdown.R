@@ -203,7 +203,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
   # try to remove entire temp dir; may fail if user opened one of the files or is inside the dir in windows explorer
   # should be safe because we use a unique name in a dir we created previously AND we checked that this is an existing path where we have write access (otherwise above code would have failed)
-  unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
+  #unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
 
   append_log_timestamp("report:", start_time)
 }
