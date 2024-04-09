@@ -86,16 +86,13 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
 ### check type of var 
 
-iter <- 0
   for (plot_gg in ggplot_cscore_histograms){
-    iter <- integer(iter) + 1
-    print(iter)
     plot_is_class <-class(plot_gg)
     print(plot_gg) 
     # print(plot_gg)
     # plot_plotly <- ggplotly(plot_gg)
     # plot_json <- plotly_json(plot_ly)
-    # filename <- paste0(output_dir, "/plot_", iter , ".json")
+    # filename <- paste0(output_dir, "/plot_", "i", ".json")
   }
   
   ### variance explained
