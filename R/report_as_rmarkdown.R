@@ -75,11 +75,23 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # Initialize list to store plotly objects
   plotly_objects <- list()
 
+  # start with easy exports
+
   ggplot_cscore_histograms = list()
   if(length(dataset$plots) > 0 && length(dataset$plots$ggplot_cscore_histograms) > 0) {
     ggplot_cscore_histograms = dataset$plots$ggplot_cscore_histograms
   }
 
+#testing with simple export 
+iter <- 0
+  for (plot_gg in ggplot_cscore_histograms){
+    iter <- integer(iter) + 1
+    print(plot_gg)
+    plot_plotly <- ggplotly(plot)
+    plot_json <- plotly_json(plot_ly)
+    filename <- paste0(output_dir, "/plot_", iter , ".json")
+  }
+  
   ### variance explained
   p_varexplained = NULL
   if(length(var_explained_sample_metadata) > 0) {
@@ -132,7 +144,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
   # Export each plotly object to Plotly JSON file
   for (i in plotly_objects) {
-    print(i)
+    print(i) # 6 object $plot
     # for (j in plotly_objects[i]) {
     #   json_objects <- plotly_json(plotly_objects[[j]])
     #   filename <- paste0(output_dir, "/plot_", i, "_", j, ".json")
@@ -203,7 +215,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
   # try to remove entire temp dir; may fail if user opened one of the files or is inside the dir in windows explorer
   # should be safe because we use a unique name in a dir we created previously AND we checked that this is an existing path where we have write access (otherwise above code would have failed)
-  #unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
+  unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
 
   append_log_timestamp("report:", start_time)
 }
