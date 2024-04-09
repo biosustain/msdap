@@ -87,7 +87,7 @@ iter <- 0
   for (plot_gg in ggplot_cscore_histograms){
     iter <- integer(iter) + 1
     print(plot_gg)
-    plot_plotly <- ggplotly(plot)
+    plot_plotly <- ggplotly(plot_gg)
     plot_json <- plotly_json(plot_ly)
     filename <- paste0(output_dir, "/plot_", iter , ".json")
   }
