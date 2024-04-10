@@ -104,6 +104,11 @@ print("try access with seq_along")
     plot_is_class <-class(plot_gg)
     class(plot_gg)
     print(plot_is_class) 
+    plot_x <- plot_gg$plot_env
+    class(plot_x)
+    plot_y <- plot_x$p
+    class(plot_y)
+    
     # print(plot_gg)
     # plot_plotly <- ggplotly(plot_gg)
     # class(plot_plotly)
