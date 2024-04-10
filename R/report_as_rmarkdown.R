@@ -90,6 +90,11 @@ print("plot class for gg cscore")
     plot_is_class <-class(plot_gg)
     class(plot_gg)
     print(plot_is_class) 
+    individual_plots <- plot_gg$plots
+    iplot_is_class <-class(individual_plots)
+    class(individual_plots)
+    print(iplot_is_class) 
+    
     # print(plot_gg)
     # plot_plotly <- ggplotly(plot_gg)
     # class(plot_plotly)
@@ -105,9 +110,11 @@ print("try access with seq_along")
     class(plot_gg)
     print(plot_is_class) 
     plot_x <- plot_gg$plot_env
-    class(plot_x)
+    plot_x_c <- class(plot_x)
+    print(plot_x_c)
     plot_y <- plot_x$p
-    class(plot_y)
+    plot_y_c <- class(plot_y)
+    print(plot_y_c)
     
     # print(plot_gg)
     # plot_plotly <- ggplotly(plot_gg)
