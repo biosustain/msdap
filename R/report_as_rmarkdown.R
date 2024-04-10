@@ -115,14 +115,20 @@ print("try access with seq_along")
     plot_y <- plot_x$p
     plot_y_c <- class(plot_y)
     print(plot_y_c)
+       
+    plot_plotly <- ggplotly(plot_y)
+    plotly_c <- class(plot_plotly)
+    print(plotly_c)
+    plot_json <- plotly_json(plot_plotly)
+    jplotly_c <- class(plot_json)
+    print(jplotly_c)
     
-    # print(plot_gg)
-    # plot_plotly <- ggplotly(plot_gg)
-    # class(plot_plotly)
-    # plot_json <- plotly_json(plot_ly)
-    # class(plot_json)
+    filename_json <- paste0(output_dir, "/plot_", i, ".json")
     
-    # filename <- paste0(output_dir, "/plot_", "i", ".json")
+    write(plot_json, file = filename_json)
+    #filename_html <- paste0(output_dir, "/plot_", i, ".html")
+    #htmlwidgets::saveWidget(plot_plotly, filename_html)
+
   }
 
 
