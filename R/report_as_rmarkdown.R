@@ -91,8 +91,11 @@ print("plot class for gg cscore")
     class(plot_gg)
     print(plot_is_class) 
     # print(plot_gg)
-    # plot_plotly <- ggplotly(plot_gg)
-    # plot_json <- plotly_json(plot_ly)
+    plot_plotly <- ggplotly(plot_gg)
+    class(plot_plotly)
+    plot_json <- plotly_json(plot_ly)
+    class(plot_json)
+    
     # filename <- paste0(output_dir, "/plot_", "i", ".json")
   }
   
