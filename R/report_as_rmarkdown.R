@@ -85,10 +85,11 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 #testing with simple export 
 
 ### check type of var 
-
+print("plot class for gg cscore")
   for (plot_gg in ggplot_cscore_histograms){
     plot_is_class <-class(plot_gg)
-    print(plot_gg) 
+    class(plot_gg)
+    print(plot_is_class) 
     # print(plot_gg)
     # plot_plotly <- ggplotly(plot_gg)
     # plot_json <- plotly_json(plot_ly)
