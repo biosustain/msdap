@@ -91,14 +91,29 @@ print("plot class for gg cscore")
     class(plot_gg)
     print(plot_is_class) 
     # print(plot_gg)
-    plot_plotly <- ggplotly(plot_gg)
-    class(plot_plotly)
-    plot_json <- plotly_json(plot_ly)
-    class(plot_json)
+    # plot_plotly <- ggplotly(plot_gg)
+    # class(plot_plotly)
+    # plot_json <- plotly_json(plot_ly)
+    # class(plot_json)
     
     # filename <- paste0(output_dir, "/plot_", "i", ".json")
   }
-  
+print("try access with seq_along")
+  for (i in seq_along(ggplot_cscore_histograms)){
+    plot_gg <- ggplot_cscore_histograms[[i]]
+    plot_is_class <-class(plot_gg)
+    class(plot_gg)
+    print(plot_is_class) 
+    # print(plot_gg)
+    # plot_plotly <- ggplotly(plot_gg)
+    # class(plot_plotly)
+    # plot_json <- plotly_json(plot_ly)
+    # class(plot_json)
+    
+    # filename <- paste0(output_dir, "/plot_", "i", ".json")
+  }
+
+
   ### variance explained
   p_varexplained = NULL
   if(length(var_explained_sample_metadata) > 0) {
