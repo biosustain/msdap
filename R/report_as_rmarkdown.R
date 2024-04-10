@@ -119,7 +119,7 @@ print("try access with seq_along")
     plot_plotly <- ggplotly(plot_y)
     plotly_c <- class(plot_plotly)
     print(plotly_c)
-    plot_json <- plotly_json(plot_plotly)
+    plot_json <- plotly_json(plot_plotly, FALSE)
     jplotly_c <- class(plot_json)
     print(jplotly_c)
     
