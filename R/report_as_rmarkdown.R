@@ -194,22 +194,18 @@ print("try access with seq_along")
           plot_is_class <-class(plot_gg)
           class(plot_gg)
           print(plot_is_class) 
-          # plot_x <- plot_gg$plot_env
-          # plot_x_c <- class(plot_x)
-          # print(plot_x_c)
-          # plot_y <- plot_x$p
-          # plot_y_c <- class(plot_y)
-          # print(plot_y_c)
-          plot_plotly <- ggplotly(plot_gg)
-          plotly_c <- class(plot_plotly)
-          print(plotly_c)
-          plot_json <- plotly_json(plot_plotly)
-          jplotly_c <- class(plot_json)
-          print(jplotly_c)
-          filename_json <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".json")
-          write(plot_json, file = filename_json)
-          filename_html <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".html")
-          htmlwidgets::saveWidget(plot_plotly, filename_html)
+          if (isa(plot_gg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_gg)
+            plotly_c <- class(plot_plotly)
+            print(plotly_c)
+            plot_json <- plotly_json(plot_plotly)
+            jplotly_c <- class(plot_json)
+            print(jplotly_c)
+            filename_json <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".json")
+            write(plot_json, file = filename_json)
+            filename_html <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".html")
+            htmlwidgets::saveWidget(plot_plotly, filename_html)
+          }
         }
       }
   }
