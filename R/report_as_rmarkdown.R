@@ -179,7 +179,7 @@ print("try access with seq_along")
   print("plotly from contrast list")
   # Export each plotly object to Plotly JSON file
   for (contr in l_contrast) {
-    contrclass <- class(l_contrast[[contr]])
+    contrclass <- class(contr)
     print(contrclass)
   }
 
