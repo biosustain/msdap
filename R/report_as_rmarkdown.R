@@ -185,26 +185,32 @@ print("try access with seq_along")
     contrclass <- class(contr) # list
     print(contrclass)
       for (i in seq_along(contr)){
-        plot_gg <- contr[[i]]
-        plot_is_class <-class(plot_gg)
-        class(plot_gg)
+        plot_list <- contr[[i]]
+        plot_is_class <-class(plot_list)
+        class(plot_list)
         print(plot_is_class) 
-        plot_x <- plot_gg$plot_env
-        plot_x_c <- class(plot_x)
-        print(plot_x_c)
-        plot_y <- plot_x$p
-        plot_y_c <- class(plot_y)
-        print(plot_y_c)
-        plot_plotly <- ggplotly(plot_y)
-        plotly_c <- class(plot_plotly)
-        print(plotly_c)
-        plot_json <- plotly_json(plot_plotly)
-        jplotly_c <- class(plot_json)
-        print(jplotly_c)
-        filename_json <- paste0(output_dir, "/plotb_", k, "_", i, ".json")
-        write(plot_json, file = filename_json)
-        filename_html <- paste0(output_dir, "/plotb_", k, "_", i, ".html")
-        htmlwidgets::saveWidget(plot_plotly, filename_html)
+        for (m in seq_along(plot_list)){
+          plot_gg <- plot_list[[m]]
+          plot_is_class <-class(plot_gg)
+          class(plot_gg)
+          print(plot_is_class) 
+          plot_x <- plot_gg$plot_env
+          plot_x_c <- class(plot_x)
+          print(plot_x_c)
+          plot_y <- plot_x$p
+          plot_y_c <- class(plot_y)
+          print(plot_y_c)
+          plot_plotly <- ggplotly(plot_y)
+          plotly_c <- class(plot_plotly)
+          print(plotly_c)
+          plot_json <- plotly_json(plot_plotly)
+          jplotly_c <- class(plot_json)
+          print(jplotly_c)
+          filename_json <- paste0(output_dir, "/plotb_", k, "_", i, ".json")
+          write(plot_json, file = filename_json)
+          filename_html <- paste0(output_dir, "/plotb_", k, "_", i, ".html")
+          htmlwidgets::saveWidget(plot_plotly, filename_html)
+        }
       }
   }
 
