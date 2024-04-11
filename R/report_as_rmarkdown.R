@@ -194,13 +194,13 @@ print("try access with seq_along")
           plot_is_class <-class(plot_gg)
           class(plot_gg)
           print(plot_is_class) 
-          plot_x <- plot_gg$plot_env
-          plot_x_c <- class(plot_x)
-          print(plot_x_c)
-          plot_y <- plot_x$p
-          plot_y_c <- class(plot_y)
-          print(plot_y_c)
-          plot_plotly <- ggplotly(plot_y)
+          # plot_x <- plot_gg$plot_env
+          # plot_x_c <- class(plot_x)
+          # print(plot_x_c)
+          # plot_y <- plot_x$p
+          # plot_y_c <- class(plot_y)
+          # print(plot_y_c)
+          plot_plotly <- ggplotly(plot_gg)
           plotly_c <- class(plot_plotly)
           print(plotly_c)
           plot_json <- plotly_json(plot_plotly)
