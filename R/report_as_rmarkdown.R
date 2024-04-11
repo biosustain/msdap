@@ -115,20 +115,16 @@ print("try access with seq_along")
     plot_y <- plot_x$p
     plot_y_c <- class(plot_y)
     print(plot_y_c)
-       
     plot_plotly <- ggplotly(plot_y)
     plotly_c <- class(plot_plotly)
     print(plotly_c)
-    plot_json <- plotly_json(plot_plotly, FALSE)
+    plot_json <- plotly_json(plot_plotly)
     jplotly_c <- class(plot_json)
     print(jplotly_c)
-    
     filename_json <- paste0(output_dir, "/plot_", i, ".json")
-    
     write(plot_json, file = filename_json)
-    #filename_html <- paste0(output_dir, "/plot_", i, ".html")
-    #htmlwidgets::saveWidget(plot_plotly, filename_html)
-
+    filename_html <- paste0(output_dir, "/plot_", i, ".html")
+    htmlwidgets::saveWidget(plot_plotly, filename_html)
   }
 
 
@@ -160,9 +156,6 @@ print("try access with seq_along")
       l_contrast[[contr]] = list(p_volcano_contrast = lapply(plot_volcano(stats_de = stats_contr, log2foldchange_threshold = stats_contr$signif_threshold_log2fc[1], qvalue_threshold = stats_contr$signif_threshold_qvalue[1], mtitle = mtitle), "[[", "ggplot"),
                                  p_pvalue_hist = plot_pvalue_histogram(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr),
                                  p_foldchange_density = plot_foldchanges(stats_contr %>% mutate(color_code = dea_algorithm), mtitle=contr) )
-      for (plot in l_contrast[[contr]]){
-        plotly_objects[[contr]]$plot <- ggplotly(l_contrast[[contr]]$plot)
-      }
     }
 
 
@@ -182,14 +175,12 @@ print("try access with seq_along")
     dd_plots = plot_differential_detect(dataset)
   }
 
+
+  print("plotly from contrast list")
   # Export each plotly object to Plotly JSON file
-  for (i in plotly_objects) {
-    print(i) # 6 object $plot
-    # for (j in plotly_objects[i]) {
-    #   json_objects <- plotly_json(plotly_objects[[j]])
-    #   filename <- paste0(output_dir, "/plot_", i, "_", j, ".json")
-    # write(json_objects, file = filename)
-    #   }
+  for (contr in l_contrast) {
+    contrclass <- class(l_contrast[[contr]])
+    print(contrclass)
   }
 
   ################ history ################
