@@ -238,8 +238,9 @@ print("plot class for gg cscore")
       }
     }, silent = TRUE)
   }
+  ###### save rdata
 
-
+  save.image(paste0(output_dir, "/plot_data.RData"))
   ################ render Rmarkdown ################
 
   f = system.file("rmd", "report.Rmd", package = "msdap")
