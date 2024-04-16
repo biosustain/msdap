@@ -84,7 +84,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 
 #testing with simple export 
 
-### check type of var 
+### check type of var plot_n no content
 print("plot class for gg cscore")
   for (plot_gg in ggplot_cscore_histograms){
     plot_is_class <-class(plot_gg)
@@ -125,6 +125,27 @@ print("try access with seq_along")
     write(plot_json, file = filename_json)
     filename_html <- paste0(output_dir, "/plot_", i, ".html")
     htmlwidgets::saveWidget(plot_plotly, filename_html)
+  }
+
+    j = as.integer(0)
+  for (plot_gg in ggplot_cscore_histograms) {
+    j= j+1
+    k = as.character(j)
+    plot_is_class <-class(plot_gg)
+    class(plot_gg)
+    print(plot_is_class) 
+    if (isa(plot_gg, c("gg","ggplot"))){
+      plot_plotly <- ggplotly(plot_gg)
+      plotly_c <- class(plot_plotly)
+      print(plotly_c)
+      plot_json <- plotly_json(plot_plotly)
+      jplotly_c <- class(plot_json)
+      print(jplotly_c)
+      filename_json <- paste0(output_dir, "/plotc_", k, ".json")
+      write(plot_json, file = filename_json)
+      filename_html <- paste0(output_dir, "/plotc_", k, ".html")
+      htmlwidgets::saveWidget(plot_plotly, filename_html)
+      }
   }
 
 
