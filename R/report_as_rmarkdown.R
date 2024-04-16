@@ -90,7 +90,7 @@ print("plot class for gg cscore")
   for (i in seq_along(ggplot_cscore_histograms)){
     plot_gg <- ggplot_cscore_histograms[[i]]
     plot_is_class <-class(plot_gg)
-    class(plot_gg)
+    class(plot_gg) 
     print(plot_is_class) 
     plot_x <- plot_gg$plot_env
     plot_x_c <- class(plot_x)
@@ -108,20 +108,6 @@ print("plot class for gg cscore")
     write(plot_json, file = filename_json)
     filename_html <- paste0(output_dir, "/plot_", i, ".html")
     htmlwidgets::saveWidget(plot_plotly, filename_html)
-    if (isa(plot_gg, c("gg","ggplot"))){
-      j= j+1
-      k = as.character(j)
-      plot_plotly <- ggplotly(plot_gg)
-      plotly_c <- class(plot_plotly)
-      print(plotly_c)
-      plot_json <- plotly_json(plot_plotly)
-      jplotly_c <- class(plot_json)
-      print(jplotly_c)
-      filename_json <- paste0(output_dir, "/plota_", k, ".json")
-      write(plot_json, file = filename_json)
-      filename_html <- paste0(output_dir, "/plota_", k, ".html")
-      htmlwidgets::saveWidget(plot_plotly, filename_html)
-    }
   }
 
 
@@ -183,6 +169,9 @@ print("plot class for gg cscore")
     contrclass <- class(contr) # list
     print(contrclass)
       for (i in seq_along(contr)){
+        testy <- contr[i]
+        testy_is_class <- class(testy)
+        print(testy_is_class)
         plot_list <- contr[[i]]
         plot_is_class <-class(plot_list)
         class(plot_list)
