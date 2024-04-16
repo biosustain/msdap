@@ -210,6 +210,41 @@ print("try access with seq_along")
       }
   }
 
+  print("plotly from contrast list")
+  # Export each plotly object to Plotly JSON file ddplots
+  j = as.integer(0)
+  for (datastruct in dd_plots) {
+    j= j+1
+    k = as.character(j)
+    contrclass <- class(datastruct) # list
+    print(contrclass)
+      for (i in seq_along(datastruct)){
+        plot_list <- datastruct[[i]]
+        plot_is_class <-class(plot_list)
+        class(plot_list)
+        print(plot_is_class) 
+        for (m in seq_along(plot_list)){
+          plot_gg <- plot_list[[m]]
+          plot_is_class <-class(plot_gg)
+          class(plot_gg)
+          print(plot_is_class) 
+          if (isa(plot_gg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_gg)
+            plotly_c <- class(plot_plotly)
+            print(plotly_c)
+            plot_json <- plotly_json(plot_plotly)
+            jplotly_c <- class(plot_json)
+            print(jplotly_c)
+            filename_json <- paste0(output_dir, "/plotc_", k, "_", i,"_", m, ".json")
+            write(plot_json, file = filename_json)
+            filename_html <- paste0(output_dir, "/plotc_", k, "_", i,"_", m, ".html")
+            htmlwidgets::saveWidget(plot_plotly, filename_html)
+          }
+        }
+      }
+  }
+
+
   ################ history ################
   history_as_string = ""
   if(exists("history_")) {
