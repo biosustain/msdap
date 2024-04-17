@@ -217,7 +217,7 @@ print("plot class for gg cscore")
       write(plot_json, file = filename_json)
       filename_html <- paste0(output_dir, "/plotc_", k, ".html")
       htmlwidgets::saveWidget(plot_plotly, filename_html)
-      }
+    }
   }
 
 
@@ -239,8 +239,7 @@ print("plot class for gg cscore")
     }, silent = TRUE)
   }
   ###### save rdata
-
-  save.image(paste0(output_dir, "/plot_data.RData"))
+  save(dd_plots, l_contrast, ggplot_cscore_histograms, p_varexplained, file  = paste0(output_dir, "/plot_data.RData"))
   ################ render Rmarkdown ################
 
   f = system.file("rmd", "report.Rmd", package = "msdap")
