@@ -199,23 +199,23 @@ print("plot class for gg cscore")
           }
           # test plot separation
           plot_ggg <- plot_gg
-          if exists("plot_ggg$data"){
-            plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
-            plot_is_class <-class(plot_ggg)
-            class(plot_ggg)
-            print(plot_is_class) 
-            if (isa(plot_ggg, c("gg","ggplot"))){
-              plot_plotly <- ggplotly(plot_ggg)
-              plotly_c <- class(plot_plotly)
-              print(plotly_c)
-              plot_json <- plotly_json(plot_plotly)
-              jplotly_c <- class(plot_json)
-              print(jplotly_c)
-              filename_json <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".json")
-              write(plot_json, file = filename_json)
-              filename_html <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".html")
-              htmlwidgets::saveWidget(plot_plotly, filename_html)
-            }
+          plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
+          plot_is_class <-class(plot_ggg)
+          class(plot_ggg)
+          print(plot_is_class) 
+          plot_ggg$facet$params$ncol <- 1
+          plot_ggg$facet$params$nrow <- 1
+          if (isa(plot_ggg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_ggg)
+            plotly_c <- class(plot_plotly)
+            print(plotly_c)
+            plot_json <- plotly_json(plot_plotly)
+            jplotly_c <- class(plot_json)
+            print(jplotly_c)
+            filename_json <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".json")
+            write(plot_json, file = filename_json)
+            filename_html <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".html")
+            htmlwidgets::saveWidget(plot_plotly, filename_html)
           }
         }
       }
