@@ -18,6 +18,7 @@
 #' @importFrom devtools session_info
 #' @import plotly
 #' @import listviewer
+#' @import tidyverse
 #' @export
 generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rollup_algorithm = "maxlfq", pca_sample_labels = "auto", var_explained_sample_metadata = NULL) {
 
