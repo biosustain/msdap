@@ -162,13 +162,16 @@ print("plot class for gg cscore")
 
   print("plotly from contrast list")
   # Export each plotly object to Plotly JSON file
+  # if possible only get  [  plottype = "asis"  ]
   j = as.integer(0)
+  # loop through contrasts
   for (contr in l_contrast) {
     j= j+1
     k = as.character(j)
     contrclass <- class(contr) # list
     print(contrclass)
-      for (i in seq_along(contr)){
+    # Volcano / hist / foldchange
+    for (i in seq_along(contr)){
         testy <- contr[i]
         testy_is_class <- class(testy)
         print(testy_is_class)
@@ -191,6 +194,23 @@ print("plot class for gg cscore")
             filename_json <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".json")
             write(plot_json, file = filename_json)
             filename_html <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".html")
+            htmlwidgets::saveWidget(plot_plotly, filename_html)
+          }
+          # test plot separation
+          plot_gg$data <- plot_gg$data %>% group_by(plottype) %>% filter(plottype == 'asis')
+          plot_is_class <-class(plot_gg)
+          class(plot_gg)
+          print(plot_is_class) 
+          if (isa(plot_gg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_gg)
+            plotly_c <- class(plot_plotly)
+            print(plotly_c)
+            plot_json <- plotly_json(plot_plotly)
+            jplotly_c <- class(plot_json)
+            print(jplotly_c)
+            filename_json <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".json")
+            write(plot_json, file = filename_json)
+            filename_html <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".html")
             htmlwidgets::saveWidget(plot_plotly, filename_html)
           }
         }
