@@ -198,12 +198,13 @@ print("plot class for gg cscore")
             htmlwidgets::saveWidget(plot_plotly, filename_html)
           }
           # test plot separation
-          plot_gg$data <- plot_gg$data %>% filter(plottype == 'asis')
-          plot_is_class <-class(plot_gg)
-          class(plot_gg)
+          plot_ggg <- plot_gg
+          plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
+          plot_is_class <-class(plot_ggg)
+          class(plot_ggg)
           print(plot_is_class) 
-          if (isa(plot_gg, c("gg","ggplot"))){
-            plot_plotly <- ggplotly(plot_gg)
+          if (isa(plot_ggg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_ggg)
             plotly_c <- class(plot_plotly)
             print(plotly_c)
             plot_json <- plotly_json(plot_plotly)
