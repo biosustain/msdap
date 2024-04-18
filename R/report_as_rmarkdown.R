@@ -197,7 +197,7 @@ print("plot class for gg cscore")
             htmlwidgets::saveWidget(plot_plotly, filename_html)
           }
           # test plot separation
-          plot_gg$data <- plot_gg$data %>% group_by(plottype) %>% filter(plottype == 'asis')
+          plot_gg$data <- plot_gg$data %>% filter(plottype == 'asis')
           plot_is_class <-class(plot_gg)
           class(plot_gg)
           print(plot_is_class) 
