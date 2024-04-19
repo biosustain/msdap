@@ -206,20 +206,20 @@ print("plot class for gg cscore")
           }
         }
       }
-      #plot if plot
-      plot_gg <- contr[i]
-            if (isa(plot_gg, c("gg","ggplot"))){
-              plot_plotly <- ggplotly(plot_gg)
-              plotly_c <- class(plot_plotly)
-              print(plotly_c)
-              plot_json <- plotly_json(plot_plotly)
-              jplotly_c <- class(plot_json)
-              print(jplotly_c)
-              filename_json <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".json")
-              write(plot_json, file = filename_json)
-              filename_html <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".html")
-              htmlwidgets::saveWidget(plot_plotly, filename_html)
-            }
+      #plot if plot # missing
+      plot_gg <- contr[[i]]
+        if (isa(plot_gg, c("gg","ggplot"))){
+          plot_plotly <- ggplotly(plot_gg)
+          plotly_c <- class(plot_plotly)
+          print(plotly_c)
+          plot_json <- plotly_json(plot_plotly)
+          jplotly_c <- class(plot_json)
+          print(jplotly_c)
+          filename_json <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".json")
+          write(plot_json, file = filename_json)
+          filename_html <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".html")
+          htmlwidgets::saveWidget(plot_plotly, filename_html)
+        }
     }
   }
 
