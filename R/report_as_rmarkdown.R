@@ -159,6 +159,7 @@ print("plot class for gg cscore")
   if("dd_proteins" %in% names(dataset) && is.data.frame(dataset$dd_proteins) && nrow(dataset$dd_proteins) > 0) {
     dd_plots = plot_differential_detect(dataset)
   }
+  # temporarily consider just plotting the 2x2 plots, and view them as whole, or crop them with an iframe
 
 
   print("plotly from contrast list")
@@ -198,15 +199,15 @@ print("plot class for gg cscore")
             htmlwidgets::saveWidget(plot_plotly, filename_html)
           }
           # test plot separation
+          # try facet_null(shrink = TRUE) after filter
           plot_ggg <- plot_gg
           plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
-          plot_is_class <-class(plot_ggg)
-          class(plot_ggg)
+          plot_gggg <- plot_ggg + facet_null(shrink = TRUE)
+          plot_is_class <-class(plot_gggg)
+          class(plot_gggg)
           print(plot_is_class) 
-          plot_ggg$facet$params$ncol <- 1
-          plot_ggg$facet$params$nrow <- 1
-          if (isa(plot_ggg, c("gg","ggplot"))){
-            plot_plotly <- ggplotly(plot_ggg)
+          if (isa(plot_gggg, c("gg","ggplot"))){
+            plot_plotly <- ggplotly(plot_gggg)
             plotly_c <- class(plot_plotly)
             print(plotly_c)
             plot_json <- plotly_json(plot_plotly)
