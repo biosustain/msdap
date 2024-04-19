@@ -202,7 +202,6 @@ print("plot class for gg cscore")
           # test plot separation (sort before filter??)
           # try facet_null(shrink = TRUE) after filter
             plot_ggg <- plot_gg
-            if exist / defined plot_ggg$data 
             plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
             plot_gggg <- plot_ggg + facet_null(shrink = TRUE)
             plot_is_class <-class(plot_gggg)
