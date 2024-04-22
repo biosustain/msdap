@@ -299,10 +299,10 @@ print(cl_varexp)
   if(!file.copy(from = f, to = f_newlocation)) {
     append_log(paste("failed to move report from", f, "into to the output directory:", f_newlocation), type = "error")
   }
-  print(f)
-  print(f_newlocation)
+
   ### create the actual report
-  rmarkdown::render(input = f_newlocation, output_file = "report.pdf", quiet = T, clean = T)
+  # rmarkdown::render(input = f_newlocation, output_file = "report.pdf", quiet = T, clean = T)
+  rmarkdown::render(input = f_newlocation, output_file = "report.pdf", quiet = F, clean = F)
 
   # sanity check; was a report PDF created ?
   fpdf_templocation = paste0(output_dir__temp, "/report.pdf")
@@ -319,7 +319,7 @@ print(cl_varexp)
 
   # try to remove entire temp dir; may fail if user opened one of the files or is inside the dir in windows explorer
   # should be safe because we use a unique name in a dir we created previously AND we checked that this is an existing path where we have write access (otherwise above code would have failed)
-  unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
+#  unlink(output_dir__temp, recursive = T, force = T) # use recursive=T, because unlink() documentation states: "If recursive = FALSE directories are not deleted, not even empty ones"
 
   append_log_timestamp("report:", start_time)
 }
