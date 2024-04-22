@@ -88,31 +88,34 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
 ## check type of var plot_n no content  ### ggcscore can also be extracted from dataset dataframe
 print("plot class for gg cscore")
   j = as.integer(0)
-  for (i in seq_along(ggplot_cscore_histograms)){
-    plot_gg <- ggplot_cscore_histograms[[i]]
-    plot_is_class <-class(plot_gg)
-    class(plot_gg) 
-    print(plot_is_class) 
-    # plot_x <- plot_gg$plot_env
-    # plot_x_c <- class(plot_x)
-    # print(plot_x_c)
-    # plot_y <- plot_x$p
-    plot_y = plot_gg
-    plot_y_c <- class(plot_y)
-    print(plot_y_c)
-    plot_plotly <- ggplotly(plot_y)
-    plotly_c <- class(plot_plotly)
-    print(plotly_c)
-    plot_json <- plotly_json(plot_plotly)
-    jplotly_c <- class(plot_json)
-    print(jplotly_c)
-    filename_json <- paste0(plot_dir, "/plot_", i, ".json")
-    write(plot_json, file = filename_json)
-    filename_html <- paste0(plot_dir, "/plot_", i, ".html")
-    htmlwidgets::saveWidget(plot_plotly, filename_html)
-  }
+  # for (i in seq_along(ggplot_cscore_histograms)){
+  #   plot_gg <- ggplot_cscore_histograms[[i]]
+  #   plot_is_class <-class(plot_gg)
+  #   class(plot_gg) 
+  #   print(plot_is_class) 
+  #   # plot_x <- plot_gg$plot_env
+  #   # plot_x_c <- class(plot_x)
+  #   # print(plot_x_c)
+  #   # plot_y <- plot_x$p
+  #   plot_y = plot_gg
+  #   plot_y_c <- class(plot_y)
+  #   print(plot_y_c)
+  #   plot_plotly <- ggplotly(plot_y)
+  #   plotly_c <- class(plot_plotly)
+  #   print(plotly_c)
+  #   plot_json <- plotly_json(plot_plotly)
+  #   jplotly_c <- class(plot_json)
+  #   print(jplotly_c)
+  #   filename_json <- paste0(plot_dir, "/plot_", i, ".json")
+  #   write(plot_json, file = filename_json)
+  #   filename_html <- paste0(plot_dir, "/plot_", i, ".html")
+  #   htmlwidgets::saveWidget(plot_plotly, filename_html)
+  # }
 
-
+for(p in ggplot_cscore_histograms){
+  plot_is_class <- class(p)
+  print(plot_is_class)
+}
 
   ### variance explained
   p_varexplained = NULL
