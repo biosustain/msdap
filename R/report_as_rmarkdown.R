@@ -88,9 +88,7 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
     ggplot_cscore_histograms = dataset$plots$ggplot_cscore_histograms
   }
 
-#testing with simple export 
-
-### check type of var plot_n no content
+## check type of var plot_n no content  ### ggcscore can also be extracted from dataset dataframe
 print("plot class for gg cscore")
   j = as.integer(0)
   for (i in seq_along(ggplot_cscore_histograms)){
@@ -98,10 +96,11 @@ print("plot class for gg cscore")
     plot_is_class <-class(plot_gg)
     class(plot_gg) 
     print(plot_is_class) 
-    plot_x <- plot_gg$plot_env
-    plot_x_c <- class(plot_x)
-    print(plot_x_c)
-    plot_y <- plot_x$p
+    # plot_x <- plot_gg$plot_env
+    # plot_x_c <- class(plot_x)
+    # print(plot_x_c)
+    # plot_y <- plot_x$p
+    plot_y = plot_gg
     plot_y_c <- class(plot_y)
     print(plot_y_c)
     plot_plotly <- ggplotly(plot_y)
