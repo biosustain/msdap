@@ -78,9 +78,6 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   # for convenience in some plotting functions, the color-codings as a wide-format tibble
   samples_colors = samples_colors_long %>% select(sample_id, shortname, prop, clr) %>% pivot_wider(id_cols = c(sample_id, shortname), names_from=prop, values_from=clr)
 
-  # Initialize list to store plotly objects
-  plotly_objects <- list()
-
   # start with easy exports
 
   ggplot_cscore_histograms = list()
@@ -122,6 +119,11 @@ print("plot class for gg cscore")
   if(length(var_explained_sample_metadata) > 0) {
     p_varexplained = plot_variance_explained(dataset, cols_metadata = var_explained_sample_metadata, rollup_algorithm = rollup_algorithm)
   }
+
+# what do we have here? looks like NULL, so we never enter if statement
+cl_varexp <- class(p_varexplained)
+print("p_varexplained is")
+print(cl_varexp)
 
   ### contrasts
   l_contrast = list()
@@ -271,7 +273,7 @@ print("plot class for gg cscore")
     }, silent = TRUE)
   }
   ###### save rdata
-  save(dd_plots, l_contrast, ggplot_cscore_histograms, p_varexplained, file  = paste0(output_dir, "/plot_data.RData"))
+  save(dd_plots, l_contrast, ggplot_cscore_histograms, file  = paste0(output_dir, "/plot_data.RData"))
   ################ render Rmarkdown ################
 
   f = system.file("rmd", "report.Rmd", package = "msdap")
@@ -297,7 +299,8 @@ print("plot class for gg cscore")
   if(!file.copy(from = f, to = f_newlocation)) {
     append_log(paste("failed to move report from", f, "into to the output directory:", f_newlocation), type = "error")
   }
-
+  print(f)
+  print(f_newlocation)
   ### create the actual report
   rmarkdown::render(input = f_newlocation, output_file = "report.pdf", quiet = T, clean = T)
 
