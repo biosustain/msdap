@@ -25,6 +25,11 @@ generate_pdf_report = function(dataset, output_dir, norm_algorithm = "vwmb", rol
   start_time = Sys.time()
   append_log("creating PDF report...", type = "progress")
 
+  # prepare for plot export
+  plot_dir = paste0(output_dir, "/plots")
+  dir.create(plot_dir)
+
+
   ################ prepare data ################
   isdia = is_dia_dataset(dataset)
 
@@ -105,9 +110,9 @@ print("plot class for gg cscore")
     plot_json <- plotly_json(plot_plotly)
     jplotly_c <- class(plot_json)
     print(jplotly_c)
-    filename_json <- paste0(output_dir, "/plot_", i, ".json")
+    filename_json <- paste0(plot_dir, "/plot_", i, ".json")
     write(plot_json, file = filename_json)
-    filename_html <- paste0(output_dir, "/plot_", i, ".html")
+    filename_html <- paste0(plot_dir, "/plot_", i, ".html")
     htmlwidgets::saveWidget(plot_plotly, filename_html)
   }
 
@@ -198,9 +203,9 @@ print("plot class for gg cscore")
               plot_json <- plotly_json(plot_plotly)
               jplotly_c <- class(plot_json)
               print(jplotly_c)
-              filename_json <- paste0(output_dir, "/plotv_", k, "_", i,"_", m, ".json")
+              filename_json <- paste0(plot_dir, "/plotv_", k, "_", i,"_", m, ".json")
               write(plot_json, file = filename_json)
-              filename_html <- paste0(output_dir, "/plotv_", k, "_", i,"_", m, ".html")
+              filename_html <- paste0(plot_dir, "/plotv_", k, "_", i,"_", m, ".html")
               htmlwidgets::saveWidget(plot_plotly, filename_html)
             }
           }
@@ -208,99 +213,22 @@ print("plot class for gg cscore")
       }
       #plot if plot # missing
       plot_gg <- contr[[i]]
-        if (isa(plot_gg, c("gg","ggplot"))){
-          plot_plotly <- ggplotly(plot_gg)
-          plotly_c <- class(plot_plotly)
-          print(plotly_c)
-          plot_json <- plotly_json(plot_plotly)
-          jplotly_c <- class(plot_json)
-          print(jplotly_c)
-          filename_json <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".json")
-          write(plot_json, file = filename_json)
-          filename_html <- paste0(output_dir, "/plothf_", k, "_", i,"_", m, ".html")
-          htmlwidgets::saveWidget(plot_plotly, filename_html)
-        }
+      if (isa(plot_gg, c("gg","ggplot"))){
+        plot_plotly <- ggplotly(plot_gg)
+        plotly_c <- class(plot_plotly)
+        print(plotly_c)
+        plot_json <- plotly_json(plot_plotly)
+        jplotly_c <- class(plot_json)
+        print(jplotly_c)
+        filename_json <- paste0(plot_dir, "/plothf_", k, "_", i,"_", m, ".json")
+        write(plot_json, file = filename_json)
+        filename_html <- paste0(plot_dir, "/plothf_", k, "_", i,"_", m, ".html")
+        htmlwidgets::saveWidget(plot_plotly, filename_html)
+      }
     }
   }
 
 
-
-  # # Export each plotly object to Plotly JSON file
-  # # if possible only get  [  plottype = "asis"  ]
-  # j = as.integer(0)
-  # # loop through contrasts
-  # for (contr in l_contrast) {
-  #   j= j+1
-  #   k = as.character(j)
-  #   contrclass <- class(contr) # list
-  #   print(contrclass)
-  #   # Volcano / hist / foldchange
-  #   for (i in seq_along(contr)){
-  #       testy <- contr[i]
-  #       testy_is_class <- class(testy)
-  #       print(testy_is_class)
-  #       plot_list <- contr[[i]]
-  #       plot_is_class <-class(plot_list)
-  #       class(plot_list)
-  #       print(plot_is_class) 
-  #       if(testy_is_class == c("list")){
-  #       for (m in seq_along(plot_list)){
-  #         plot_gg <- plot_list[[m]]
-  #         plot_is_class <-class(plot_gg)
-  #         class(plot_gg)
-  #         print(plot_is_class) 
-  #         if (isa(plot_gg, c("gg","ggplot"))){
-  #           plot_plotly <- ggplotly(plot_gg)
-  #           plotly_c <- class(plot_plotly)
-  #           print(plotly_c)
-  #           plot_json <- plotly_json(plot_plotly)
-  #           jplotly_c <- class(plot_json)
-  #           print(jplotly_c)
-  #           filename_json <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".json")
-  #           write(plot_json, file = filename_json)
-  #           filename_html <- paste0(output_dir, "/plotb_", k, "_", i,"_", m, ".html")
-  #           htmlwidgets::saveWidget(plot_plotly, filename_html)
-  #         }
-  #         # test plot separation (sort before filter??)
-  #         # try facet_null(shrink = TRUE) after filter
-  #           plot_ggg <- plot_gg
-  #           plot_ggg$data <- plot_ggg$data %>% filter(plottype == 'asis')
-  #           plot_gggg <- plot_ggg + facet_null(shrink = TRUE)
-  #           plot_is_class <-class(plot_gggg)
-  #           class(plot_gggg)
-  #           print(plot_is_class) 
-  #           if (isa(plot_gggg, c("gg","ggplot"))){
-  #             plot_plotly <- ggplotly(plot_gggg)
-  #             plotly_c <- class(plot_plotly)
-  #             print(plotly_c)
-  #             plot_json <- plotly_json(plot_plotly)
-  #             jplotly_c <- class(plot_json)
-  #             print(jplotly_c)
-  #             filename_json <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".json")
-  #             write(plot_json, file = filename_json)
-  #             filename_html <- paste0(output_dir, "/plotbx_", k, "_", i,"_", m, ".html")
-  #             htmlwidgets::saveWidget(plot_plotly, filename_html)
-  #           }
-  #         }
-  #       }
-  #         plot_gg <- testy
-  #         plot_is_class <-class(plot_gg)
-  #         class(plot_gg)
-  #         print(plot_is_class) 
-  #         if (isa(plot_gg, c("gg","ggplot"))){
-  #           plot_plotly <- ggplotly(plot_gg)
-  #           plotly_c <- class(plot_plotly)
-  #           print(plotly_c)
-  #           plot_json <- plotly_json(plot_plotly)
-  #           jplotly_c <- class(plot_json)
-  #           print(jplotly_c)
-  #           filename_json <- paste0(output_dir, "/plotby_", k, "_", i,"_", m, ".json")
-  #           write(plot_json, file = filename_json)
-  #           filename_html <- paste0(output_dir, "/plotby_", k, "_", i,"_", m, ".html")
-  #           htmlwidgets::saveWidget(plot_plotly, filename_html)
-  #         }
-  #     }
-  # }
 
   print("plotly from ddplots")
   # Export each plotly object to Plotly JSON file ddplots
@@ -318,9 +246,9 @@ print("plot class for gg cscore")
       plot_json <- plotly_json(plot_plotly)
       jplotly_c <- class(plot_json)
       print(jplotly_c)
-      filename_json <- paste0(output_dir, "/plotc_", k, ".json")
+      filename_json <- paste0(plot_dir, "/plotdd_", k, ".json")
       write(plot_json, file = filename_json)
-      filename_html <- paste0(output_dir, "/plotc_", k, ".html")
+      filename_html <- paste0(plot_dir, "/plotdd_", k, ".html")
       htmlwidgets::saveWidget(plot_plotly, filename_html)
     }
   }
