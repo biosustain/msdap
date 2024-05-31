@@ -1,4 +1,5 @@
-This is a fork of https://github.com/ftwkoopmans/msdap/ with the purpose of running MS-DAP in a particular nextflow pipeline, for all other purposes, please refer to the original git repo.
+This is a fork of https://github.com/ftwkoopmans/msdap/ with the purpose of running MS-DAP in the particular nextflow pipeline available at https://github.com/biosustain/dsp_nf-msdap/ 
+For all other purposes, please refer to the original git repo. 
 
 
 
