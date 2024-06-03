@@ -1,6 +1,6 @@
 ---
 title: "MS-DAP: Mass Spectrometry Downstream Analysis Pipeline"
-subtitle: "version: `r msdap::msdap_version()` &nbsp; &nbsp;  https://github.com/biosustain/msdap/ based on https://github.com/ftwkoopmans/msdap/"
+subtitle: "https://github.com/biosustain/msdap/ based on  https://github.com/ftwkoopmans/msdap/ &nbsp; &nbsp; version: `r msdap::msdap_version()`"
 output:
   pdf_document:
     toc: true
